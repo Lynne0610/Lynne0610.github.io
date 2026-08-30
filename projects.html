@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Lynne</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --paper:#f5f5f2; --ink:#171717; --line:#bdbdb8; }
+    html, body { min-height:100%; }
+    body { font-family: Arial, "Microsoft YaHei", sans-serif; background:var(--paper); color:var(--ink); }
+    a { color:inherit; text-decoration:none; }
+    nav { height:72px; display:flex; align-items:center; justify-content:space-between; padding:0 42px; border-bottom:1px solid var(--line); }
+    .logo { font-size:15px; letter-spacing:.04em; }
+    .back { font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+    main { min-height:calc(100vh - 72px); display:grid; grid-template-columns:minmax(420px, 46vw) 1fr; }
+    .ring-panel { min-height:calc(100vh - 72px); position:sticky; top:0; overflow:hidden; border-right:1px solid var(--line); }
+    .eyebrow { position:absolute; z-index:2; top:46px; left:42px; font-size:12px; opacity:.55; letter-spacing:.08em; text-transform:uppercase; }
+    .ring { position:absolute; width:min(70vw, 780px); height:min(70vw, 780px); min-width:540px; min-height:540px; left:50%; top:50%; transform:translate(-50%,-50%); }
+    .ring::before { content:""; position:absolute; inset:16%; border:1px solid var(--line); border-radius:50%; }
+    .ring-center { position:absolute; inset:40%; border:1px solid var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; text-align:center; font-size:12px; line-height:1.45; letter-spacing:.05em; text-transform:uppercase; background:var(--paper); z-index:1; }
+    .ring-item { position:absolute; width:132px; height:166px; left:50%; top:50%; margin:-83px 0 0 -66px; transform-origin:66px 83px; cursor:pointer; border:0; background:transparent; color:var(--ink); }
+    .cover { width:100%; height:132px; display:flex; align-items:flex-end; padding:12px; background:linear-gradient(135deg, #d8d8d3, #8f8f89); color:#fff; font-size:28px; letter-spacing:-.05em; transition:transform .35s ease; }
+    .ring-item:nth-of-type(3n) .cover { background:linear-gradient(135deg, #a9b5aa, #556158); }
+    .ring-item:nth-of-type(4n) .cover { background:linear-gradient(135deg, #b6a89a, #6f6259); }
+    .ring-item:nth-of-type(5n) .cover { background:linear-gradient(135deg, #bcc0c0, #6c7373); }
+    .ring-item:hover .cover, .ring-item:focus-visible .cover { transform:scale(1.06); }
+    .ring-item span { display:block; padding-top:7px; font-size:10px; text-align:left; letter-spacing:.05em; white-space:nowrap; }
+    .content { padding:118px 42px 64px; display:flex; flex-direction:column; }
+    h1 { font-size:clamp(52px, 7vw, 116px); line-height:.85; font-weight:400; letter-spacing:-.07em; }
+    .intro { margin-top:34px; max-width:380px; font-size:14px; line-height:1.55; }
+    .categories { margin-top:auto; padding-top:88px; }
+    .category { width:100%; display:grid; grid-template-columns:36px 1fr auto; gap:14px; align-items:baseline; border-top:1px solid var(--line); padding:18px 0; background:none; border-right:0; border-left:0; border-bottom:0; text-align:left; color:var(--ink); cursor:pointer; font:inherit; }
+    .category:last-child { border-bottom:1px solid var(--line); }
+    .category .number, .count { font-size:11px; opacity:.52; }
+    .category .name { font-size:clamp(21px,2.4vw,36px); letter-spacing:-.04em; }
+    .category.active .name::after { content:" ←"; font-size:.7em; }
+    .hint { padding-top:22px; font-size:11px; opacity:.55; }
+    @media (max-width: 768px) {
+      nav { height:60px; padding:0 20px; }
+      main { display:block; }
+      .ring-panel { position:relative; min-height:470px; border-right:0; border-bottom:1px solid var(--line); }
+      .eyebrow { left:20px; top:28px; }
+      .ring { width:520px; height:520px; min-width:520px; min-height:520px; }
+      .content { padding:72px 20px 44px; }
+      .categories { margin-top:56px; padding-top:0; }
+      .hint { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" href="index.html">LYNNE0610</a>
+    <a class="back" href="index.html">← Home</a>
+  </nav>
+  <main>
+    <section class="ring-panel" aria-label="项目环形目录">
+      <div class="eyebrow">Project directory / scroll to browse</div>
+      <div class="ring" id="ring">
+        <div class="ring-center" id="ringCenter">15<br>projects</div>
+      </div>
+    </section>
+    <section class="content">
+      <div>
+        <div class="eyebrow" style="position:static;">Selected works</div>
+        <h1>PROJECT<br>INDEX.</h1>
+        <p class="intro">滚动左侧环形目录浏览项目封面；选择类别后查看对应项目。点击任一封面，进入项目详情页。</p>
+      </div>
+      <div class="categories" id="categories" aria-label="项目类别"></div>
+      <p class="hint">Tip: 在左侧区域滚动鼠标滚轮，可旋转项目目录。</p>
+    </section>
+  </main>
+  <script>
+    const projects = [
+      {id:'01', title:'项目 01', category:'景观设计', group:0},
+      {id:'02', title:'项目 02', category:'景观设计', group:0},
+      {id:'03', title:'项目 03', category:'景观设计', group:0},
+      {id:'04', title:'项目 04', category:'景观设计', group:0},
+      {id:'05', title:'项目 05', category:'建筑设计', group:1},
+      {id:'06', title:'项目 06', category:'建筑设计', group:1},
+      {id:'07', title:'项目 07', category:'建筑设计', group:1},
+      {id:'08', title:'项目 08', category:'建筑设计', group:1},
+      {id:'09', title:'项目 09', category:'室内设计', group:2},
+      {id:'10', title:'项目 10', category:'室内设计', group:2},
+      {id:'11', title:'项目 11', category:'室内设计', group:2},
+      {id:'12', title:'项目 12', category:'室内设计', group:2},
+      {id:'13', title:'项目 13', category:'其他创意展示', group:3},
+      {id:'14', title:'项目 14', category:'其他创意展示', group:3},
+      {id:'15', title:'项目 15', category:'其他创意展示', group:3}
+    ];
+    const categories = ['景观设计','建筑设计','室内设计','其他创意展示'];
+    let activeCategory = 0;
+    let rotation = 0;
+    const ring = document.getElementById('ring');
+    const center = document.getElementById('ringCenter');
+    const categoryBox = document.getElementById('categories');
+
+    function renderCategories() {
+      categoryBox.innerHTML = '';
+      categories.forEach(function(name, index) {
+        const count = projects.filter(function(p) { return p.group === index; }).length;
+        const button = document.createElement('button');
+        button.className = 'category' + (index === activeCategory ? ' active' : '');
+        button.type = 'button';
+        button.innerHTML = '<span class="number">0' + (index + 1) + '</span><span class="name">' + name + '</span><span class="count">' + count + ' 项</span>';
+        button.addEventListener('click', function() {
+          activeCategory = index;
+          rotation = 0;
+          render();
+        });
+        categoryBox.appendChild(button);
+      });
+    }
+
+    function renderRing() {
+      ring.querySelectorAll('.ring-item').forEach(function(item) { item.remove(); });
+      const visible = projects.filter(function(p) { return p.group === activeCategory; });
+      center.innerHTML = categories[activeCategory] + '<br>' + visible.length + ' projects';
+      visible.forEach(function(project, index) {
+        const angle = (360 / visible.length) * index + rotation;
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'ring-item';
+        item.setAttribute('aria-label', '查看' + project.title);
+        item.style.transform = 'rotate(' + angle + 'deg) translateY(-250px) rotate(' + (-angle) + 'deg)';
+        item.innerHTML = '<span class="cover">' + project.id + '</span><span>' + project.title + '</span>';
+        item.addEventListener('click', function() { window.location.href = 'project.html?id=' + project.id; });
+        ring.appendChild(item);
+      });
+    }
+    function render() { renderCategories(); renderRing(); }
+    document.querySelector('.ring-panel').addEventListener('wheel', function(event) {
+      if (window.innerWidth > 768) {
+        event.preventDefault();
+        rotation += event.deltaY > 0 ? 18 : -18;
+        renderRing();
+      }
+    }, {passive:false});
+    render();
+  </script>
+</body>
+</html>
